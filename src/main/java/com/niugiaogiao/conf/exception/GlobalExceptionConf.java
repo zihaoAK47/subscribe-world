@@ -14,8 +14,8 @@ class GlobalExceptionConf {
     }
 
     @ExceptionHandler(Exception.class)
-    public Result<?> systemException(Exception e) {
-        return Result.error("系统异常");
+    public Result<?> unknownSystemException(Exception e) {
+        return Result.error("未知系统异常");
     }
 
     @ExceptionHandler(ServiceException.class)
@@ -24,5 +24,13 @@ class GlobalExceptionConf {
         return StringUtils.isEmpty(message)
                 ? Result.error("业务异常")
                 : Result.error(serviceException.getServiceCode(), message);
+    }
+
+    @ExceptionHandler(SystemException.class)
+    public Result<?> systemException(SystemException systemException) {
+        String message = systemException.getMessage();
+        return StringUtils.isEmpty(message)
+                ? Result.error("系统异常")
+                : Result.error(systemException.getServiceCode(), message);
     }
 }
