@@ -1,6 +1,5 @@
 package com.niugiaogiao.conf;
 
-import cn.hutool.json.JSONUtil;
 import com.niugiaogiao.utils.IgnoreResponseResult;
 import com.niugiaogiao.utils.Result;
 import org.springframework.core.MethodParameter;
@@ -22,9 +21,13 @@ class PackageResponseConf implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter,
                                   MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+
+        if (o instanceof String)
+            return o;
+
         if (o instanceof IgnoreResponseResult)
             return ((IgnoreResponseResult<?>) o).getResult();
 
-        return o instanceof String ? JSONUtil.toJsonStr(Result.ok(o)) : Result.ok(o);
+        return Result.ok(o);
     }
 }
