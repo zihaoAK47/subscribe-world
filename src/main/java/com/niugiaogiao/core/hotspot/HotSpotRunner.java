@@ -17,7 +17,7 @@ public class HotSpotRunner {
     @Autowired
     HotSpotParserRunner hotSpotRunner;
 
-    @Scheduled(cron = "0 0 0/1 * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void run() {
         for (HotSpot item : hotSpotList) {
             try {
