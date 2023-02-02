@@ -1,4 +1,4 @@
-package com.niugiaogiao.modules.wx.message;
+package com.niugiaogiao.component.wechat.message;
 
 
 import org.w3c.dom.Document;

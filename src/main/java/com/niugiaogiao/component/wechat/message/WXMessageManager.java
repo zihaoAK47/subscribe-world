@@ -1,7 +1,6 @@
-package com.niugiaogiao.utils;
+package com.niugiaogiao.component.wechat.message;
 
 import cn.hutool.core.util.XmlUtil;
-import com.niugiaogiao.modules.wx.message.WXMessageHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -10,12 +9,12 @@ import javax.xml.xpath.XPathConstants;
 import java.util.List;
 
 @Component
-public final class WXMessageUtil {
+public final class WXMessageManager {
 
-    @Autowired
-    private List<WXMessageHandler> wxMessageHandler;
+    private final List<WXMessageHandler> wxMessageHandler;
 
-    private WXMessageUtil() {
+    private WXMessageManager(@Autowired List<WXMessageHandler> wxMessageHandler) {
+        this.wxMessageHandler = wxMessageHandler;
     }
 
     public String handleMessage(String xmlData) {

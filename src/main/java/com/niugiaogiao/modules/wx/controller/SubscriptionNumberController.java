@@ -2,9 +2,9 @@ package com.niugiaogiao.modules.wx.controller;
 
 import com.niugiaogiao.conf.exception.ServiceException;
 import com.niugiaogiao.modules.wx.entity.dto.WXEventDTO;
+import com.niugiaogiao.component.wechat.message.WXMessageManager;
 import com.niugiaogiao.utils.IgnoreResponseResult;
 import com.niugiaogiao.utils.StreamUtil;
-import com.niugiaogiao.utils.WXMessageUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 @RequestMapping("/wx")
 class SubscriptionNumberController {
-    private final WXMessageUtil wxMessageUtil;
+    private final WXMessageManager wxMessageUtil;
 
     @GetMapping("/event")
     public IgnoreResponseResult<?> event(HttpServletRequest request) {
