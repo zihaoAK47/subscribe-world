@@ -10,6 +10,9 @@ dependency-reduced-pom.xml
 .flattened-pom.xml
 pom.xml.versionsBackup
 
+# text class ignore
+src/test/
+
 # maven plugin ignore
 release.properties
 cobertura.ser
