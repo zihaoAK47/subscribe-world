@@ -3,6 +3,7 @@ package com.niugiaogiao.component.wechat;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.niugiaogiao.conf.exception.ServiceException;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ class WeChatApiDefault implements WeChatApi {
         if (StringUtils.isEmpty(fileName))
             return null;
 
-        String uploadForeverMaterialUrl = weChatConf.getUploadForeverMaterialUrl();
+        String uploadForeverMaterialUrl = weChatConf.getAddMaterialUtl();
         try (HttpResponse httpResponse = HttpRequest
                 .post(uploadForeverMaterialUrl)
                 .form("media", new File(fileName))
@@ -46,5 +47,15 @@ class WeChatApiDefault implements WeChatApi {
 
     @Override
     public void getForeverMaterialList() {
+    }
+
+    @Override
+    public void deleteForeverMaterial(String mediaId) {
+        if (StringUtils.isEmpty(mediaId))
+            return;
+
+        JSONObject body = new JSONObject();
+        body.put("media_id", mediaId);
+        HttpUtil.post(weChatConf.getDeleteMaterialUtl(), body.toJSONString());
     }
 }

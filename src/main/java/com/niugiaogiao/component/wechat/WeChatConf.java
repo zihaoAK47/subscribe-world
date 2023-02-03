@@ -12,12 +12,18 @@ public class WeChatConf {
     public String appSecret;
     @Value("${wx.access-token}")
     public String tokenUrl;
-    @Value("${wx.material-upload}")
-    private String uploadMaterial;
+    @Value("${wx.material-add}")
+    private String addMaterialUtl;
+    @Value("${wx.material-delete}")
+    private String deleteMaterialUtl;
 
     public String accessToken;
 
-    public String getUploadForeverMaterialUrl() {
-        return uploadMaterial.replace("%ACCESS_TOKEN%", accessToken);
+    public String getAddMaterialUtl() {
+        return addMaterialUtl.replace("%ACCESS_TOKEN%", accessToken);
+    }
+
+    public String getDeleteMaterialUtl() {
+        return deleteMaterialUtl.replace("%ACCESS_TOKEN%", accessToken);
     }
 }
