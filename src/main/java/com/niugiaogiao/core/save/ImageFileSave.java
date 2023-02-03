@@ -24,7 +24,7 @@ final class ImageFileSave implements HotSpotSave {
 
     @Override
     public <T> void save(Platform platform, T parseResult) {
-        String fileName = "/home/niugiaogiao/".concat(platform.name()).concat(".JPEG");
+        String fileName = "/opt/".concat(platform.name()).concat(".JPEG");
         if (createHotSpotMaterial(parseResult, fileName)) {
             uploadWxMaterial(platform, fileName);
         }
