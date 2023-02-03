@@ -1,10 +1,8 @@
 package com.niugiaogiao.component.wechat;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-@Data
 @Configuration
 public class WeChatConf {
 
@@ -14,5 +12,12 @@ public class WeChatConf {
     public String appSecret;
     @Value("${wx.access-token}")
     public String tokenUrl;
+    @Value("${wx.material-upload}")
+    private String uploadMaterial;
+
     public String accessToken;
+
+    public String getUploadForeverMaterialUrl() {
+        return uploadMaterial.replace("%ACCESS_TOKEN%", accessToken);
+    }
 }

@@ -13,3 +13,4 @@ wx:
   app-id: wx8510f6e5eed522be
   app-secret: 6f8c5306413cd07d4e74b1b2f23e2a94
   access-token: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${wx.app-id}&secret=${wx.app-secret}
+  material-upload: https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%ACCESS_TOKEN%&type=image
