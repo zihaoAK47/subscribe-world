@@ -1,6 +1,6 @@
 package com.niugiaogiao.conf.exception;
 
-import com.niugiaogiao.utils.Result;
+import com.niugiaogiao.utils.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,23 +14,23 @@ class GlobalExceptionConf {
     }
 
     @ExceptionHandler(Exception.class)
-    public Result<?> unknownSystemException(Exception e) {
-        return Result.error("未知系统异常");
+    public R<?> unknownSystemException(Exception e) {
+        return R.error("未知系统异常");
     }
 
     @ExceptionHandler(ServiceException.class)
-    public Result<?> serviceException(ServiceException serviceException) {
+    public R<?> serviceException(ServiceException serviceException) {
         String message = serviceException.getMessage();
         return StringUtils.isEmpty(message)
-                ? Result.error("业务异常")
-                : Result.error(serviceException.getServiceCode(), message);
+                ? R.error("业务异常")
+                : R.error(serviceException.getServiceCode(), message);
     }
 
     @ExceptionHandler(SystemException.class)
-    public Result<?> systemException(SystemException systemException) {
+    public R<?> systemException(SystemException systemException) {
         String message = systemException.getMessage();
         return StringUtils.isEmpty(message)
-                ? Result.error("系统异常")
-                : Result.error(systemException.getServiceCode(), message);
+                ? R.error("系统异常")
+                : R.error(systemException.getServiceCode(), message);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class Result<T> implements Serializable {
+public class R<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,11 +35,11 @@ public class Result<T> implements Serializable {
      */
     private long timestamp = System.currentTimeMillis();
 
-    public Result() {
+    public R() {
 
     }
 
-    public Result<T> success(String message) {
+    public R<T> success(String message) {
         this.message = message;
         this.code = HttpStatus.HTTP_OK;
         this.success = true;
@@ -47,43 +47,43 @@ public class Result<T> implements Serializable {
     }
 
 
-    public static Result<Object> ok() {
-        Result<Object> r = new Result<Object>();
+    public static <T> R<T> ok() {
+        R<T> r = new R<>();
         r.setSuccess(true);
         r.setCode(HttpStatus.HTTP_OK);
         r.setMessage("成功");
         return r;
     }
 
-    public static Result<Object> ok(String msg) {
-        Result<Object> r = new Result<Object>();
+    public static <T> R<T> ok(String msg) {
+        R<T> r = new R<>();
         r.setSuccess(true);
         r.setCode(HttpStatus.HTTP_OK);
         r.setMessage(msg);
         return r;
     }
 
-    public static Result<Object> ok(Object data) {
-        Result<Object> r = new Result<Object>();
+    public static <T> R<T> ok(T data) {
+        R<T> r = new R<>();
         r.setSuccess(true);
         r.setCode(HttpStatus.HTTP_OK);
         r.setResult(data);
         return r;
     }
 
-    public static Result<Object> error(String msg) {
+    public static <T> R<T> error(String msg) {
         return error(HttpStatus.HTTP_INTERNAL_ERROR, msg);
     }
 
-    public static Result<Object> error(int code, String msg) {
-        Result<Object> r = new Result<Object>();
+    public static <T> R<T> error(int code, String msg) {
+        R<T> r = new R<>();
         r.setCode(code);
         r.setMessage(msg);
         r.setSuccess(false);
         return r;
     }
 
-    public Result<T> error500(String message) {
+    public R<T> error500(String message) {
         this.message = message;
         this.code = HttpStatus.HTTP_INTERNAL_ERROR;
         this.success = false;
@@ -93,7 +93,7 @@ public class Result<T> implements Serializable {
     /**
      * 无权限访问返回结果
      */
-    public static Result<Object> noAuth(String msg) {
+    public static <T> R<T> noAuth(String msg) {
         return error(HttpStatus.HTTP_BAD_REQUEST, msg);
     }
 }

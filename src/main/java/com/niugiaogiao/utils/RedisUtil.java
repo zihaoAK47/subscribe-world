@@ -1,6 +1,6 @@
 package com.niugiaogiao.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -11,14 +11,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@AllArgsConstructor
 public final class RedisUtil {
 
     private RedisTemplate<String, Object> redisTemplate;
-
-    @Autowired
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 
     /**
      * 指定缓存失效时间

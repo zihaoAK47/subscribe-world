@@ -5,7 +5,6 @@ import com.niugiaogiao.core.save.HotSpotCacheKey;
 import com.niugiaogiao.modules.hotspot.vo.HotSpotWeiVO;
 import com.niugiaogiao.modules.hotspot.vo.HotSpotZhiHuVO;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
@@ -18,8 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public final class HotSpotUtil {
 
-    @Autowired
-    final RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     public List<HotSpotZhiHuVO> hotSpotZhiHu() {
         List<BaseParseResult> baseParseResult = getBaseParseResult(HotSpotCacheKey.HOT_SPOT_ZHI_HU);

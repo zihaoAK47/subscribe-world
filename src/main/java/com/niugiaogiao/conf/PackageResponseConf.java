@@ -1,7 +1,7 @@
 package com.niugiaogiao.conf;
 
 import com.niugiaogiao.utils.IgnoreResponseResult;
-import com.niugiaogiao.utils.Result;
+import com.niugiaogiao.utils.R;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -28,6 +28,6 @@ class PackageResponseConf implements ResponseBodyAdvice<Object> {
         if (o instanceof IgnoreResponseResult)
             return ((IgnoreResponseResult<?>) o).getResult();
 
-        return Result.ok(o);
+        return R.ok(o);
     }
 }
