@@ -40,7 +40,7 @@ public final class ImagesUtil {
         graphics.fillRect(0, 0, imageWidth, imageHeight);
         graphics.setColor(new Color(0x373737));
         graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
-        graphics.setFont(new Font("宋体", Font.BOLD, 14));
+        graphics.setFont(new Font("宋体", Font.BOLD, 20));
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         return graphics;
     }

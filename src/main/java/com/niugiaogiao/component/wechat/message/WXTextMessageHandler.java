@@ -1,10 +1,12 @@
 package com.niugiaogiao.component.wechat.message;
 
 import cn.hutool.core.util.XmlUtil;
-import com.niugiaogiao.utils.HotSpotUtil;
+import com.niugiaogiao.core.save.HotSpotCacheKey;
+import com.niugiaogiao.utils.RedisUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 
 import javax.xml.xpath.XPathConstants;
@@ -14,9 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 class WXTextMessageHandler implements WXMessageHandler {
 
-    private final HotSpotUtil hotSpotUtil;
+    private final RedisUtil redisUtil;
 
-    private final String helpText = "1.知乎\n2.微博\n3.新闻联播 [未开放]";
+    private final String helpText = "a.知乎\nb.微博\nc.新闻联播 [未开放]";
 
     @Override
     public boolean isHandler(String messageType) {
@@ -32,10 +34,10 @@ class WXTextMessageHandler implements WXMessageHandler {
     private String chooseResponse(TextHandlerReceiveDTO textHandlerReceive) {
         String content = textHandlerReceive.getContent();
         switch (content) {
-            case "1":
-                return getResponse(hotSpotUtil.wxHotSpotZhiHu(), textHandlerReceive);
-            case "2":
-                return getResponse(hotSpotUtil.wxHotSpotWeiBo(), textHandlerReceive);
+            case "a":
+                return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_ZHI_HU, textHandlerReceive);
+            case "b":
+                return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_WEI_BO, textHandlerReceive);
             default:
                 return getResponse(helpText, textHandlerReceive);
         }
@@ -48,6 +50,28 @@ class WXTextMessageHandler implements WXMessageHandler {
         textHandlerReceiveDTO.createTime = (String) XmlUtil.getByXPath("//xml/CreateTime", document, XPathConstants.STRING);
         textHandlerReceiveDTO.content = (String) XmlUtil.getByXPath("//xml/Content", document, XPathConstants.STRING);
         return textHandlerReceiveDTO;
+    }
+
+    private String responseImage(String redisKey, TextHandlerReceiveDTO handlerReceiveDTO) {
+        String mediaId = (String) redisUtil.get(redisKey);
+        if (StringUtils.isEmpty(mediaId)) {
+            return null;
+        }
+
+        String messTemplate = "<xml>\n" +
+                "  <ToUserName><![CDATA[toUser]]></ToUserName>\n" +
+                "  <FromUserName><![CDATA[fromUser]]></FromUserName>\n" +
+                "  <CreateTime>%time%</CreateTime>\n" +
+                "  <MsgType><![CDATA[image]]></MsgType>\n" +
+                "  <Image>\n" +
+                "    <MediaId><![CDATA[media_id]]></MediaId>\n" +
+                "  </Image>\n" +
+                "</xml>\n";
+        String xmlBody = messTemplate.replace("toUser", handlerReceiveDTO.getFromUserName());
+        xmlBody = xmlBody.replace("fromUser", handlerReceiveDTO.getToUserName());
+        xmlBody = xmlBody.replace("%time%", String.valueOf(new Date().getTime()));
+        xmlBody = xmlBody.replace("media_id", mediaId);
+        return xmlBody;
     }
 
     private String getResponse(String hotSportBody, TextHandlerReceiveDTO handlerReceiveDTO) {

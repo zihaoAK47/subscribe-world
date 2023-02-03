@@ -36,13 +36,16 @@ final class ImageFileSave implements HotSpotSave {
         }
         List<BaseParseResult> hotSpotResult = CastUtils.cast(parseResult);
         List<String> titles = new ArrayList<>(hotSpotResult.size());
-        hotSpotResult.forEach(item -> titles.add(item.getTitle()));
+        int index = 0;
+        for (BaseParseResult itemResult : hotSpotResult) {
+            titles.add((++index) + "." + itemResult.getTitle());
+        }
         imagesUtil.textToImage(titles, new File(fileName));
         return true;
     }
 
     private void uploadWxMaterial(Platform platform, String fileName) {
-        String redisKey = "wx:material:".concat(platform.name());
+        String redisKey = HotSpotCacheKey.HOT_SPOT_IMAGE.concat(platform.name());
         String mediaId = (String) redisUtil.get(redisKey);
         if (!StringUtils.isEmpty(mediaId)) {
             weChatApi.deleteForeverMaterial(mediaId);
