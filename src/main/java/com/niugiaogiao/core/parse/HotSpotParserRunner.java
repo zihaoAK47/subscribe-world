@@ -16,7 +16,7 @@ public class HotSpotParserRunner {
     List<HotSpotParse> hotSpotParses;
 
     @Autowired
-    HotSpotSave hotSpotSave;
+    List<HotSpotSave> hotSpotSave;
 
 
     public void parse(HotSpotResponse hotSpotData) {
@@ -31,7 +31,7 @@ public class HotSpotParserRunner {
             if (ObjectUtils.isEmpty(parse) || parse.isEmpty())
                 continue;
 
-            hotSpotSave.save(hotSpotData.getPlantFlag(), parse);
+            hotSpotSave.forEach(saveComponent -> saveComponent.save(hotSpotData.getPlantFlag(), parse));
         }
     }
 }
