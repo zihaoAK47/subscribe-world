@@ -1,6 +1,8 @@
 package com.niugiaogiao.utils;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import sun.font.FontDesignMetrics;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,14 +16,18 @@ import java.util.List;
 @Component
 public final class ImagesUtil {
 
-    private static final int bgColor = 0x9f9f5f;
-    private static final int imageWidth = 1024;
-    private static final int imageHeight = 1300;
+    private static final int bgColor = 0xFFFFFF;
+    private static final int fontColor = 0x2a2e30;
+    private static  int imageWidth = 2048;
+    private static  int imageHeight = 1500;
+
+    public static final String fontStyle = "XHei Intel";
 
     private ImagesUtil() {
     }
 
     public void textToImage(List<String> texts, File file) {
+        confImage(texts);
         BufferedImage bufImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics2D = getGraphics2D(bufImage);
         try {
@@ -34,35 +40,54 @@ public final class ImagesUtil {
         }
     }
 
+    public void confImage(final List<String> texts) {
+        if (ObjectUtils.isEmpty(texts) || texts.isEmpty()) {
+            return;
+        }
+
+        FontMetrics fm = FontDesignMetrics.getMetrics(new Font(fontStyle, Font.BOLD, 20));
+        int maxWidth = 0;
+        int maxHeight = 50;
+        for (String item : texts) {
+            if (fm.stringWidth(item) > maxWidth) {
+                maxWidth = fm.stringWidth(item);
+            }
+            maxHeight += 35;
+        }
+        imageWidth = maxWidth + 200;
+        imageHeight = maxHeight;
+    }
+
     private Graphics2D getGraphics2D(BufferedImage bufferedImage) {
         Graphics2D graphics = bufferedImage.createGraphics();
-        graphics.setColor(new Color(bgColor));
+        graphics.setColor(new Color(fontColor));
         graphics.fillRect(0, 0, imageWidth, imageHeight);
-        graphics.setColor(new Color(0x373737));
+        graphics.setColor(new Color(bgColor));
         graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
-        graphics.setFont(new Font("宋体", Font.BOLD, 20));
+        graphics.setFont(new Font(fontStyle, Font.BOLD, 20));
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         return graphics;
     }
 
     private void fillGraphics2D(Graphics2D graphics2D, List<String> texts) throws IOException {
-        int lingHeight = 0;
+        int lingHeight = 40;
         for (String item : texts) {
             int charNum;
             int textCount = 0;
-            char[] readFun = new char[100];
+            char[] readFun = new char[imageWidth];
             StringReader reader = new StringReader(item);
+
             while ((charNum = reader.read()) != -1) {
                 readFun[textCount++] = (char) charNum;
-                if (readFun[99] != 0) {
-                    graphics2D.drawString(new String(readFun), 10, lingHeight); //20和i值是图片上的x,y坐标
+                if (readFun[imageWidth - 1] != 0) {
+                    graphics2D.drawString(new String(readFun), 20, lingHeight); //20和i值是图片上的x,y坐标
                     lingHeight = lingHeight + 25; //换行，通过增加行高实现
                     textCount = 0;
                     Arrays.fill(readFun, '\0');
                 }
             }
-            lingHeight = lingHeight + 25;
             graphics2D.drawString(new String(readFun), 20, lingHeight);
+            lingHeight = lingHeight + 35;
         }
     }
 
