@@ -17,12 +17,10 @@ public class HotSpotRunner {
     @Autowired
     HotSpotParserRunner hotSpotRunner;
 
-//    @Scheduled(cron = "0 0/10 * * * ?")
-     @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void run() {
         for (HotSpot item : hotSpotList) {
             try {
-                System.err.println("run......");
                 String response = item.downDataSource();
                 HotSpotResponse hotSpotResponse = new HotSpotResponse(item.getPlantFlag(), JSONObject.parseObject(response));
                 hotSpotRunner.parse(hotSpotResponse);

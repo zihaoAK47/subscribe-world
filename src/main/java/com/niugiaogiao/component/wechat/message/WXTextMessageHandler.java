@@ -18,7 +18,7 @@ class WXTextMessageHandler implements WXMessageHandler {
 
     private final RedisUtil redisUtil;
 
-    private final String helpText = "a.知乎\nb.微博\nc.新闻联播 [未开放]";
+    private final String helpText = "a.知乎\nb.微博\nd.百度\nc.新闻联播 [未开放]";
 
     @Override
     public boolean isHandler(String messageType) {
@@ -38,6 +38,8 @@ class WXTextMessageHandler implements WXMessageHandler {
                 return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_ZHI_HU, textHandlerReceive);
             case "b":
                 return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_WEI_BO, textHandlerReceive);
+            case "d":
+                return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_BAI_DU, textHandlerReceive);
             default:
                 return getResponse(helpText, textHandlerReceive);
         }

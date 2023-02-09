@@ -13,6 +13,7 @@ public final class HotSpotCacheKey {
 
     public static final String HOT_SPOT_IMAGES_ZHI_HU = HOT_SPOT_IMAGE.concat(Platform.ZHI_HU.name());
     public static final String HOT_SPOT_IMAGES_WEI_BO = HOT_SPOT_IMAGE.concat(Platform.WEI_BO.name());
+    public static final String HOT_SPOT_IMAGES_BAI_DU = HOT_SPOT_IMAGE.concat(Platform.BAI_DU.name());
 
     private HotSpotCacheKey() {
     }
