@@ -23,7 +23,7 @@ class WeChatApiDefault implements WeChatApi {
         if (StringUtils.isEmpty(fileName))
             return null;
 
-        String uploadForeverMaterialUrl = weChatConf.getAddMaterialUtl();
+        String uploadForeverMaterialUrl = weChatConf.getAddMaterialUrl();
         try (HttpResponse httpResponse = HttpRequest
                 .post(uploadForeverMaterialUrl)
                 .form("media", new File(fileName))
@@ -56,6 +56,15 @@ class WeChatApiDefault implements WeChatApi {
 
         JSONObject body = new JSONObject();
         body.put("media_id", mediaId);
-        HttpUtil.post(weChatConf.getDeleteMaterialUtl(), body.toJSONString());
+        HttpUtil.post(weChatConf.getDeleteMaterialUrl(), body.toJSONString());
+    }
+
+    @Override
+    public String listForeverMaterial() {
+        JSONObject reqBody = new JSONObject();
+        reqBody.put("type", "image");
+        reqBody.put("offset", 0);
+        reqBody.put("count", 10);
+        return HttpUtil.post(weChatConf.getListMaterialUrl(), reqBody.toString());
     }
 }

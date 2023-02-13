@@ -15,3 +15,4 @@ wx:
   access-token: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${wx.app-id}&secret=${wx.app-secret}
   material-add: https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%ACCESS_TOKEN%&type=image
   material-delete: https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=%ACCESS_TOKEN%
+  material-list: https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%ACCESS_TOKEN%

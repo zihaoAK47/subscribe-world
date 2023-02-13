@@ -6,4 +6,5 @@ public interface WeChatApi {
     void getForeverMaterial();
     void getForeverMaterialList();
     void deleteForeverMaterial(String mediaId);
+    String listForeverMaterial();
 }
