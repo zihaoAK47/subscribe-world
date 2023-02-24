@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,24 +33,6 @@ public final class HotSpotUtil {
         return result;
     }
 
-    public String wxHotSpotZhiHu() {
-        StringBuilder sb = new StringBuilder();
-        List<HotSpotZhiHuVO> hotSpotZhiHuVOS = hotSpotZhiHu();
-        for (HotSpotZhiHuVO item : hotSpotZhiHuVOS) {
-            sb.append(item.getTitle()).append("\n\n");
-        }
-        return sb.toString();
-    }
-
-    public String wxHotSpotWeiBo() {
-        StringBuilder sb = new StringBuilder();
-        List<HotSpotWeiVO> hotSpotWeiVOS = hotSpotWeiBo();
-        for (HotSpotWeiVO item : hotSpotWeiVOS) {
-            sb.append(item.getTitle()).append("\n\n");
-        }
-        return sb.toString();
-    }
-
     public List<HotSpotWeiVO> hotSpotWeiBo() {
         List<BaseParseResult> baseParseResult = getBaseParseResult(HotSpotCacheKey.HOT_SPOT_WEI_BO);
         List<HotSpotWeiVO> result = new ArrayList<>(baseParseResult.size());
@@ -61,6 +44,43 @@ public final class HotSpotUtil {
         });
 
         return result;
+    }
+
+    public void saveLastOperator(final String fromUser, final String operator) {
+        redisUtil.set(HotSpotCacheKey.HOT_SPOT_USER_OPERATOR.concat(fromUser), operator, 20 * 60);
+    }
+
+    public boolean existsUserLastOperator(final String fromUser) {
+        return redisUtil.hasKey(HotSpotCacheKey.HOT_SPOT_USER_OPERATOR.concat(fromUser));
+    }
+
+    public BaseParseResult getHotSpotDetail(final String fromUser, final String content) {
+        Object lastOperator = redisUtil.get(HotSpotCacheKey.HOT_SPOT_USER_OPERATOR.concat(fromUser));
+        if (ObjectUtils.isEmpty(lastOperator)) {
+            return null;
+        }
+
+        int index = 0;
+        List<BaseParseResult> baseHotSpotZhiHu = null;
+        if ("a".equals(lastOperator)) {
+            baseHotSpotZhiHu = getBaseParseResult(HotSpotCacheKey.HOT_SPOT_ZHI_HU);
+            for (BaseParseResult item : baseHotSpotZhiHu) {
+                if (String.valueOf((++index)).equals(content)) {
+                    return item;
+                }
+            }
+        }
+
+        if ("b".equals(lastOperator)) {
+            baseHotSpotZhiHu = getBaseParseResult(HotSpotCacheKey.HOT_SPOT_WEI_BO);
+            for (BaseParseResult item : baseHotSpotZhiHu) {
+                if (String.valueOf((++index)).equals(content)) {
+                    return item;
+                }
+            }
+        }
+
+        return null;
     }
 
     private List<BaseParseResult> getBaseParseResult(final String key) {

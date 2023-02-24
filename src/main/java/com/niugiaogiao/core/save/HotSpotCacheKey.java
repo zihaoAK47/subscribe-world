@@ -6,6 +6,7 @@ public final class HotSpotCacheKey {
 
     public static final String HOT_SPOT_FLAG = "hotSpot:";
     public static final String HOT_SPOT_IMAGE = "wx:material:";
+    public static final String HOT_SPOT_USER_OPERATOR = "hotSpot:user:operator:";
 
     public static final String HOT_SPOT_ZHI_HU = HOT_SPOT_FLAG.concat(Platform.ZHI_HU.name());
 

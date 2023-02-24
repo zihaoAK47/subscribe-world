@@ -1,11 +1,14 @@
 package com.niugiaogiao.component.wechat.message;
 
 import cn.hutool.core.util.XmlUtil;
+import com.niugiaogiao.core.parse.BaseParseResult;
 import com.niugiaogiao.core.save.HotSpotCacheKey;
+import com.niugiaogiao.utils.HotSpotUtil;
 import com.niugiaogiao.utils.RedisUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 
@@ -16,9 +19,10 @@ import java.util.Date;
 @AllArgsConstructor
 class WXTextMessageHandler implements WXMessageHandler {
 
+    private static final String helpText = "a.知乎\nb.微博\nc.百度\nd.新闻联播 [未开放]";
     private final RedisUtil redisUtil;
 
-    private final String helpText = "a.知乎\nb.微博\nd.百度\nc.新闻联播 [未开放]";
+    private final HotSpotUtil hotSpotUtil;
 
     @Override
     public boolean isHandler(String messageType) {
@@ -35,13 +39,22 @@ class WXTextMessageHandler implements WXMessageHandler {
         String content = textHandlerReceive.getContent();
         switch (content) {
             case "a":
+                hotSpotUtil.saveLastOperator(textHandlerReceive.getFromUserName(), "a");
                 return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_ZHI_HU, textHandlerReceive);
             case "b":
+                hotSpotUtil.saveLastOperator(textHandlerReceive.getFromUserName(), "b");
                 return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_WEI_BO, textHandlerReceive);
-            case "d":
+            case "c":
+                hotSpotUtil.saveLastOperator(textHandlerReceive.getFromUserName(), "c");
                 return responseImage(HotSpotCacheKey.HOT_SPOT_IMAGES_BAI_DU, textHandlerReceive);
-            default:
+            case "help":
                 return getResponse(helpText, textHandlerReceive);
+            default:
+                BaseParseResult hotSpotDetail = hotSpotUtil.getHotSpotDetail(textHandlerReceive.fromUserName, textHandlerReceive.content);
+                if (ObjectUtils.isEmpty(hotSpotDetail)) {
+                    return getResponse("help显示提示", textHandlerReceive);
+                }
+                return getResponse("<a href='" + hotSpotDetail.getAccessUrl() + "'>" + hotSpotDetail.getTitle() + "</a>", textHandlerReceive);
         }
     }
 

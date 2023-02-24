@@ -17,7 +17,7 @@ import java.util.List;
 public final class ImagesUtil {
 
     private static final int bgColor = 0xFFFFFF;
-    private static final int fontColor = 0x2a2e30;
+    private static final int fontColor = 0x0181818;
     private static  int imageWidth = 2048;
     private static  int imageHeight = 1500;
 
@@ -60,7 +60,7 @@ public final class ImagesUtil {
 
     private Graphics2D getGraphics2D(BufferedImage bufferedImage) {
         Graphics2D graphics = bufferedImage.createGraphics();
-        graphics.setColor(new Color(fontColor));
+        graphics.setColor(new Color(fontColor, true));
         graphics.fillRect(0, 0, imageWidth, imageHeight);
         graphics.setColor(new Color(bgColor));
         graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
