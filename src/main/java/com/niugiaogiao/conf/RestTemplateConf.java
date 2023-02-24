@@ -42,7 +42,6 @@ public class RestTemplateConf {
 		httpClientBuilder.setConnectionManager(httpClientConnectionManager);
 		httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(3, true));
 
-		// set request header
 		List<Header> headers = new ArrayList<>();
 		headers.add(new BasicHeader("Content-Type", "application/json"));
 		headers.add(new BasicHeader("Accept", "*/*"));
