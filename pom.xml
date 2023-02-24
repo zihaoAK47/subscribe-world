@@ -58,19 +58,30 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-<!--            <plugin>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>${maven.plugin.version}</version>-->
 <!--                <configuration>-->
-<!--                    <source>${java.version}</source>-->
-<!--                    <target>${java.version}</target>-->
-<!--                    <encoding>UTF-8</encoding>-->
-<!--                    <compilerArgs>-->
-<!--                        <arg>-parameters</arg>-->
-<!--                    </compilerArgs>-->
+<!--                    <fork>true</fork>-->
+<!--                    <finalName>${project.build.finalName}</finalName>-->
+<!--                    <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>-->
+<!--                    <layout>ZIP</layout>-->
+<!--                    <includes>-->
+<!--                        &lt;!&ndash;这里是填写需要包含进去的jar，-->
+<!--                            必须项目中的某些模块，会经常变动，那么就应该将其坐标写进来-->
+<!--                            如果没有则non-exists ，表示不打包依赖-->
+<!--                        &ndash;&gt;-->
+<!--                        <include>-->
+<!--                            <groupId>non-exists</groupId>-->
+<!--                            <artifactId>non-exists</artifactId>-->
+<!--                        </include>-->
+<!--                    </includes>-->
 <!--                </configuration>-->
-<!--            </plugin>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -80,6 +91,26 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <version>3.3.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy-dependencies</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${project.build.directory}/lib</outputDirectory>-->
+<!--                            <excludeTransitive>false</excludeTransitive>-->
+<!--                            <stripVersion>false</stripVersion>-->
+<!--                            <includeScope>runtime</includeScope>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -90,6 +121,21 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- 添加log4j2依赖 -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -126,6 +172,11 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${http-client-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.10</version>
         </dependency>
     </dependencies>
 </project>

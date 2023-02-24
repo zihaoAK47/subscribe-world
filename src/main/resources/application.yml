@@ -9,6 +9,9 @@ spring:
     port: 6379
     password: AK47
 
+logging:
+  config: classpath:logback-spring.xml
+
 wx:
   app-id: wx8510f6e5eed522be
   app-secret: 6f8c5306413cd07d4e74b1b2f23e2a94
